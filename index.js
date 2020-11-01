@@ -1,16 +1,15 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const passport = require('passport');
 
 const appRoutes = require('./routes/appRoutes');
 const authRoutes = require('./routes/authRoutes');
 
 const keys = require('./config/keys');
 
-require('./services/passport');
-
-
 const app = express();
+
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -25,6 +24,7 @@ app.use((req, res, next) => {
 
 require('./models/Question');
 require('./models/User');
+require('./services/passport');
 
 // app.use(passport.initialize());
 // app.use(passport.session());

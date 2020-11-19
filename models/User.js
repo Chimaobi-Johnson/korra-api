@@ -23,6 +23,8 @@ const userSchema = new Schema({
     unique: true,
     required: true
   },
+  phone: String,
+  country: String,
   profilePhoto: String,
   profilePhoto_id: String,
   coverImage: String,

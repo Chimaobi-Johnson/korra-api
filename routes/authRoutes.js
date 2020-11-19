@@ -9,6 +9,8 @@ router.post('/auth/login', authController.login);
 
 router.post('/auth/register', authController.signUp);
 
+router.post('/auth/register/details', authController.addUserDetails);
+
 // router.get('/user',  passport.authenticate('jwt', { session: false }), authController.getUser);
 
 

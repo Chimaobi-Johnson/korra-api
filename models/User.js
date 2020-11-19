@@ -15,7 +15,7 @@ const userSchema = new Schema({
   },
   gender: {
     type: String,
-    default: 'female'
+    required: true
   },
   email: {
     type: String,
@@ -34,6 +34,8 @@ const userSchema = new Schema({
       ref: 'Question'
     }
   ],
+  groups: [String],
+  interests: [String],
   friends: [ String ],
   answers: [
     {

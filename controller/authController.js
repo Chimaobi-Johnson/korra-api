@@ -17,7 +17,7 @@ exports.signUp = (req, res) => {
       return user.save();
     })
     .then((result) => {
-      res.status(201).json({ message: "User created successfully" });
+      res.status(201).json({ message: "User created successfully", user: result });
     })
     .catch((err) => {
         console.log(err);
@@ -25,6 +25,30 @@ exports.signUp = (req, res) => {
         error.httpStatusCode = 500;
         return next(error);
     });
+};
+
+
+exports.addUserDetails = (req, res) => {
+  const { phone, country, groups, interests, userId } = req.body;
+  User.findById(userId).then(user => {
+    if(!user) {
+      const error = new Error("User not found!");
+      throw error;
+    }
+    user.phone = phone;
+    user.country = country;
+    user.groups = groups;
+    user.interests = interests;
+    return user.save();
+  })
+  .then(savedUser => {
+    // automatically log user in
+    const tokenObject = issueJWT(savedUser);
+    res.status(200).json({ token: tokenObject.token, expiresIn: tokenObject.expires });
+  })
+  .catch(err => {
+    console.log(err);
+  })
 };
 
 exports.login = (req, res) => {

@@ -5,7 +5,9 @@ const appController = require('../controller/appController');
 
 const router = express.Router();
 
-router.get('/api/questions', appController.getQuestions);
+router.get('/questions', appController.getQuestions);
+
+router.post('/question', appController.addQuestion);
 
 router.get('/user', passport.authenticate('jwt', { session: false }), appController.getUser);
 

@@ -17,6 +17,8 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
+  imageUrl: String,
+  imageId: String,
   email: {
     type: String,
     index: true,
@@ -28,6 +30,7 @@ const userSchema = new Schema({
   profilePhoto: String,
   profilePhoto_id: String,
   coverImage: String,
+  coverImageId: String,
   password: String,
   role: { type: String, default: 'Suscriber' },
   questions: [

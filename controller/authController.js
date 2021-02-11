@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const { issueJWT } = require("../utils/issueJWT");
+const cloudinary = require('cloudinary').v2;
 
 exports.signUp = (req, res) => {
   const { firstName, lastName, email, gender, password } = req.body;
@@ -50,6 +51,31 @@ exports.addUserDetails = (req, res) => {
     console.log(err);
   })
 };
+
+exports.uploadUserImage = (req, res) => {
+  const { image, userId } = req.body;
+  User.findById(userId).then(user => {
+    if(!user) {
+      const error = new Error("User not found!");
+      throw error;
+    }
+    const savedUser = cloudinary.uploader.upload(image, { folder: "korra" }, (err, result) => {
+      if(result) {
+        user.imageUrl = result.url;
+        user.imageId = result.public_id;
+      }
+      return user.save();
+    })
+    return savedUser;
+  })
+  .then(savedUser => {
+    // automatically log user in
+    res.status(200).json({ user: savedUser, message: "Image uploaded successfully" });
+  })
+  .catch(err => {
+    console.log(err);
+  })
+}
 
 exports.login = (req, res) => {
   const { email, password } = req.body;

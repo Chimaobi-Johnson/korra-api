@@ -14,6 +14,9 @@ const questionSchema = new Schema({
     topic: {
         type: String
     },
+    tags: [
+      String
+    ]
     answers: [
         {
             type: Schema.Types.ObjectId,

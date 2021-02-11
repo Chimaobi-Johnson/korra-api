@@ -15,7 +15,8 @@ exports.addQuestion = (req, res) => {
     const question = new Question({
       title: text,
       tags: tags,
-      topic: category
+      topic: category,
+      createdBy: req.user._id
     })
     question.save()
     .then(success => {

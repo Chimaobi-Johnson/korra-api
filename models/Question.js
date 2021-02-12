@@ -16,7 +16,7 @@ const questionSchema = new Schema({
     },
     tags: [
       String
-    ]
+    ],
     answers: [
         {
             type: Schema.Types.ObjectId,

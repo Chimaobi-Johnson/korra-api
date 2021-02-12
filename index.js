@@ -12,7 +12,7 @@ const app = express();
 
 
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:19006');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader(
       'Access-Control-Allow-Methods',
@@ -44,10 +44,10 @@ app.use((error, req, res, next) => {
     console.log(error);
     res.status(error.httpStatusCode).json({ message: 'An error occured, please try again' })
 })
-  
+
 mongoose.connect(keys.mongoURI).then(connect => {
     console.log('Database Connected!')
 }).catch(err => console.log(err));
-  
-const PORT = process.env.PORT || 8000 
+
+const PORT = process.env.PORT || 8000
 app.listen(PORT)

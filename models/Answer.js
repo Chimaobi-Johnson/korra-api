@@ -1,20 +1,14 @@
-const { ObjectId } = require('bson');
 const mongoose = require('mongoose')
-const uniqueValidator = require('mongoose-unique-validator')
 const { Schema } = mongoose;
 
-const questionSchema = new Schema({
-    title: {
+const answerSchema = new Schema({
+    content: {
         required: true,
         type: String
     },
-    description: {
-        type: String
-    },
-    category: {
-        type: String,
-        default: 'Uncategorized'
-    },
+    images: [
+        String
+    ],
     upvotes: [
         {
             type: Schema.Types.ObjectId,
@@ -33,15 +27,11 @@ const questionSchema = new Schema({
             ref: 'User'
         }
     ],
-    tags: [
-      String
-    ],
-    answers: [
-        {
+    question: {
             type: Schema.Types.ObjectId,
-            ref: 'Answer'
-        }
-    ],
+            ref: 'Question',
+            required: true
+    },
     createdBy: {
         type: Schema.Types.ObjectId,
         ref: 'User',
@@ -49,6 +39,5 @@ const questionSchema = new Schema({
     }
 }, { timestamps: true });
 
-questionSchema.plugin(uniqueValidator);
 
-module.exports = mongoose.model('question', questionSchema);
+module.exports = mongoose.model('answer', answerSchema);

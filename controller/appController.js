@@ -11,12 +11,12 @@ exports.getQuestions = (req, res) => {
 }
 
 exports.addQuestion = (req, res) => {
-  const { text, tags, category } = req.body;
+  const { text, tags, category, userId } = req.body;
     const question = new Question({
       title: text,
       tags: tags,
       topic: category,
-      createdBy: req.user._id
+      createdBy: userId
     })
     question.save()
     .then(success => {

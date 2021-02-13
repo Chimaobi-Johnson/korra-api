@@ -1,6 +1,5 @@
 const { ObjectId } = require('bson');
 const mongoose = require('mongoose')
-const uniqueValidator = require('mongoose-unique-validator')
 const { Schema } = mongoose;
 
 const questionSchema = new Schema({
@@ -11,9 +10,8 @@ const questionSchema = new Schema({
     description: {
         type: String
     },
-    category: {
+    topic: {
         type: String,
-        default: 'Uncategorized'
     },
     upvotes: [
         {
@@ -48,7 +46,5 @@ const questionSchema = new Schema({
         required: true
     }
 }, { timestamps: true });
-
-questionSchema.plugin(uniqueValidator);
 
 module.exports = mongoose.model('question', questionSchema);

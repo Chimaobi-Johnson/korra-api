@@ -6,8 +6,14 @@ exports.getUser = (req, res) => {
 }
 
 exports.getQuestions = (req, res) => {
-    // Question.find();
-    res.status(200).json({message: "good enough"});
+    Question.find()
+    .then(questions => {
+      res.status(200).json({ questions });
+    })
+    .catch(err => {
+      console.log(err)
+    })
+
 }
 
 exports.addQuestion = (req, res) => {

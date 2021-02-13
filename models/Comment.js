@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose;
 
-const replySchema = new Schema({
+const commentSchema = new Schema({
     content: {
         required: true,
         type: String
@@ -37,4 +37,4 @@ const replySchema = new Schema({
 }, { timestamps: true });
 
 
-module.exports = mongoose.model('reply', replySchema);
+module.exports = mongoose.model('comment', commentSchema);

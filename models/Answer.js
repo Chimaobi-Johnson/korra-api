@@ -27,7 +27,13 @@ const answerSchema = new Schema({
             ref: 'User'
         }
     ],
-    question: {
+    comments: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Comment'
+        }
+    ],
+    questionId: {
             type: Schema.Types.ObjectId,
             ref: 'Question',
             required: true

@@ -9,6 +9,10 @@ router.get('/questions', appController.getQuestions);
 
 router.post('/question', appController.addQuestion);
 
+router.get('/answers', appController.getAnswers);
+
+router.post('/answer', appController.addAnswer);
+
 router.get('/user', passport.authenticate('jwt', { session: false }), appController.getUser);
 
 // router.post('/api/question/new', appController.postQuestion);

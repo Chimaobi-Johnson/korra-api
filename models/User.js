@@ -47,7 +47,16 @@ const userSchema = new Schema({
 			type: Schema.Types.ObjectId,
 			ref: 'Answer'
 		}
-  ]
+  ],
+  address: {
+    country: String,
+    state: String,
+    city: String,
+    zip: Number,
+  },
+  // location: {
+  //   type: GeolocationCoordinates
+  // }
 }, { timestamps: true });
 
 userSchema.plugin(uniqueValidator);

@@ -95,6 +95,21 @@ exports.addAnswer = (req, res) => {
 }
 
 
+exports.getMainAnswer = (req, res) => {
+  const { questionId } = req.body;
+  Answer.find({ questionId: questionId })
+  .sort({ upvote: 1 })
+  .then(answers => {
+    console.log(answers)
+    res.status(200).json({ answer: answers });
+  })
+  .catch(err => {
+    console.log(err)
+  })
+
+}
+
+
 exports.getAnswers = (req, res) => {
   Answer.aggregate([
     { $lookup: { from: 'users', localField: 'createdBy', foreignField: '_id', as: 'createdBy' }},
@@ -132,3 +147,6 @@ exports.getAnswers = (req, res) => {
 
 
 }
+
+
+

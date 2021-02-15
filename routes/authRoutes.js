@@ -11,6 +11,11 @@ router.post('/auth/register', authController.signUp);
 
 router.post('/auth/register/details', authController.addUserDetails);
 
+router.get('/auth/logout', (req, res) => {
+    req.logout();
+    res.status(200).json({ message: 'User logged out' })
+  })
+
 // router.get('/user',  passport.authenticate('jwt', { session: false }), authController.getUser);
 
 

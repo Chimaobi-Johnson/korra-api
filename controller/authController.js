@@ -3,6 +3,8 @@ const bcrypt = require("bcryptjs");
 const { issueJWT } = require("../utils/issueJWT");
 const cloudinary = require('cloudinary').v2;
 
+require('../config/cloudinary');
+
 exports.signUp = (req, res) => {
   const { firstName, lastName, email, gender, password } = req.body;
   bcrypt

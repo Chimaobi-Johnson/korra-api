@@ -73,7 +73,9 @@ exports.uploadUserImage = (req, res) => {
     res.status(200).json({ user: savedUser, message: "Image uploaded successfully" });
   })
   .catch(err => {
-    console.log(err);
+    const error = new Error(err);
+    error.httpStatusCode = err.response.status;
+    return next(error);
   })
 }
 
@@ -84,24 +86,24 @@ exports.login = (req, res, next) => {
     .then((user) => {     
         if (!user) {
             const error = new Error("A user with this email could not be found!");
-            error.httpStatusCode = 401;
+            error.httpStatusCode = 404;
             return next(error);
         }
-        console.log(user)
         dbUser = user
         return bcrypt.compare(password, user.password)
     })
     .then(isEqual => {
         if (!isEqual) {
-        res.status(401).json({ message: "Incorrect password" });
+          const error = new Error("Error. Email or password is not correct");
+          error.httpStatusCode = 401;
+          return next(error);
         }
         const tokenObject = issueJWT(dbUser);
         res.status(200).json({ token: tokenObject.token, expiresIn: tokenObject.expires });
     })
     .catch((err) => {   
-      console.log(err);
       const error = new Error(err);
-      error.httpStatusCode = 500;
+      error.httpStatusCode = err.response.status;
       return next(error);
     });
 }

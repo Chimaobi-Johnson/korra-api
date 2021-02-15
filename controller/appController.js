@@ -179,3 +179,60 @@ exports.upvoteQuestion = (req, res, next) => {
   })
 }
 
+
+exports.upvoteAnswer = (req, res, next) => {
+  const { userId, answerId } = req.body;
+  Answer.findById(answerId)
+  .then(answer => {
+    if(!answer) {
+      const error = new Error("Answer not found. Might have been deleted");
+      throw error
+    }
+    // check is id exists, if it does remove it
+    const isInArray = answer.upvotes.includes(userId);
+    if(isInArray) {
+      const idIndex = answer.upvotes.indexOf(userId);
+      if (idIndex > -1) {
+        answer.upvotes.splice(idIndex, 1);
+      }
+    } else {
+      answer.upvotes.push(userId)
+    }
+    
+    return answer.save();
+  })
+  .then(updatedAnswer => {
+    res.status(200).json({ answer: updatedAnswer });
+  }).catch(err => {
+    console.log(err);
+  })
+}
+
+
+exports.downvoteAnswer = (req, res, next) => {
+  const { userId, answerId } = req.body;
+  Answer.findById(answerId)
+  .then(answer => {
+    if(!answer) {
+      const error = new Error("Answer not found. Might have been deleted");
+      throw error
+    }
+    // check is id exists, if it does remove it
+    const isInArray = answer.downvotes.includes(userId);
+    if(isInArray) {
+      const idIndex = answer.downvotes.indexOf(userId);
+      if (idIndex > -1) {
+        answer.downvotes.splice(idIndex, 1);
+      }
+    } else {
+      answer.downvotes.push(userId)
+    }
+    
+    return answer.save();
+  })
+  .then(updatedAnswer => {
+    res.status(200).json({ answer: updatedAnswer });
+  }).catch(err => {
+    console.log(err);
+  })
+}

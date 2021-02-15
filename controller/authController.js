@@ -21,9 +21,8 @@ exports.signUp = (req, res) => {
       res.status(201).json({ message: "User created successfully", user: result });
     })
     .catch((err) => {
-        console.log(err);
         const error = new Error(err);
-        error.httpStatusCode = 500;
+        error.httpStatusCode = err.response.status;
         return next(error);
     });
 };
@@ -58,7 +57,8 @@ exports.uploadUserImage = (req, res) => {
   User.findById(userId).then(user => {
     if(!user) {
       const error = new Error("User not found!");
-      throw error;
+      error.httpStatusCode = 404;
+      return next(error);
     }
     const savedUser = cloudinary.uploader.upload(image, { folder: "korra" }, (err, result) => {
       if(result) {

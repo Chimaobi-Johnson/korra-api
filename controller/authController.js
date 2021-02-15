@@ -70,10 +70,10 @@ exports.uploadUserImage = (req, res) => {
     return savedUser;
   })
   .then(savedUser => {
-    // automatically log user in
     res.status(200).json({ user: savedUser, message: "Image uploaded successfully" });
   })
   .catch(err => {
+    console.log(err);
     const error = new Error(err);
     error.httpStatusCode = err.response.status;
     return next(error);

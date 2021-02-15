@@ -2,7 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const passport = require('passport');
-
+const multer = require('multer');
+const uuidv4 = require('uuid');
 const appRoutes = require('./routes/appRoutes');
 const authRoutes = require('./routes/authRoutes');
 
@@ -10,6 +11,30 @@ const keys = require('./config/keys');
 
 const app = express();
 
+const storage = multer.diskStorage({
+  destination: null,
+  filename: function (req, file, cb) {
+    cb(null, uuidv4() + file.originalname)
+  }
+});
+
+
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === 'image/png' ||
+    file.mimetype === 'image/jpg' ||
+    file.mimetype === 'image/jpeg'
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+app.use(multer({ storage: storage, fileFilter: fileFilter }).fields([
+  { name: 'profilePic', maxCount: 1 },
+  { name: 'answerImage', maxCount: 8 },
+  { name: 'coverImage', maxCount: 1 },
+]));
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');

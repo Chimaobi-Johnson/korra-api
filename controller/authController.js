@@ -54,7 +54,13 @@ exports.addUserDetails = (req, res) => {
 };
 
 exports.uploadUserImage = (req, res) => {
-  const { image, userId } = req.body;
+  const { file, userId } = req.body;
+  if(!req.files.profilePic) {
+    const error = new Error('No image provided');
+    error.httpStatusCode = 422;
+    throw error;
+  }
+  console.log(req.files)
   console.log(req.body);
   User.findById(userId).then(user => {
     if(!user) {
@@ -62,10 +68,10 @@ exports.uploadUserImage = (req, res) => {
       error.httpStatusCode = 404;
       return next(error);
     }
-    const savedUser = cloudinary.uploader.upload(image, { folder: "korra" }, (err, result) => {
+    const savedUser = cloudinary.uploader.upload(file, { folder: "korra" }, (err, result) => {
       if(result) {
-        user.imageUrl = result.url;
-        user.imageId = result.public_id;
+        user.profilePhoto = result.url;
+        user.profilePhotoId = result.public_id;
       }
       return user.save();
     })
@@ -77,7 +83,7 @@ exports.uploadUserImage = (req, res) => {
   .catch(err => {
     console.log(err);
     const error = new Error(err);
-    error.httpStatusCode = err.response.status;
+    error.httpStatusCode = 500;
     return next(error);
   })
 }

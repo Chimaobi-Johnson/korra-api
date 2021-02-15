@@ -30,7 +30,7 @@ const userSchema = new Schema({
   phone: String,
   country: String,
   profilePhoto: String,
-  profilePhoto_id: String,
+  profilePhotoId: String,
   coverImage: String,
   coverImageId: String,
   password: String,

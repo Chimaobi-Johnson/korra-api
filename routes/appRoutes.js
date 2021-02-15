@@ -9,9 +9,9 @@ router.get('/questions', appController.getQuestions);
 
 router.post('/question', appController.addQuestion);
 
-router.get('/answers', appController.getAnswers);
+router.post('/answers', appController.getAnswers);
 
-router.get('/answer/main', appController.getMainAnswer);
+router.post('/answer/main', appController.getMainAnswer);
 
 router.post('/answer', appController.addAnswer);
 

@@ -1,7 +1,10 @@
+const mongoose = require("mongoose");
 const Question = require('../models/Question');
 const Answer = require('../models/Answer');
 
 const User = require('../models/User');
+
+const ObjectId = mongoose.Types.ObjectId;
 
 exports.getUser = (req, res) => {
    res.status(200).json({user: req.user});
@@ -98,10 +101,9 @@ exports.addAnswer = (req, res) => {
 exports.getMainAnswer = (req, res) => {
   const { questionId } = req.body;
   Answer.find({ questionId: questionId })
-  .sort({ upvote: 1 })
+  .sort({ "upvotes.length": 1 })
   .then(answers => {
-    console.log(answers)
-    res.status(200).json({ answer: answers });
+    res.status(200).json({ answer: answers[0] });
   })
   .catch(err => {
     console.log(err)
@@ -111,25 +113,27 @@ exports.getMainAnswer = (req, res) => {
 
 
 exports.getAnswers = (req, res) => {
+  const { questionId } = req.body;
   Answer.aggregate([
+    { $match: { questionId: ObjectId(questionId) } },
     { $lookup: { from: 'users', localField: 'createdBy', foreignField: '_id', as: 'createdBy' }},
-    { $lookup: { from: 'answers', localField: 'answers', foreignField: '_id', as: 'answers' }},
+    { $lookup: { from: 'comments', localField: 'comments', foreignField: '_id', as: 'comments' }},
     { $lookup: { from: 'users', localField: 'upvotes', foreignField: '_id', as: 'upvotes' }},
     { $lookup: { from: 'users', localField: 'downvotes', foreignField: '_id', as: 'downvotes' }},
     { $lookup: { from: 'users', localField: 'shares', foreignField: '_id', as: 'shares' }},
     { $project: {
-      title: 1,
-      description: 1,
-      topic: 1,
+      content: 1,
       upvotes: '$upvotes',
       downvotes: '$downvotes',
       shares: '$shares',
-      tags: 1,
+      images: 1,
       createdAt: 1,
-      answers: '$answers',
+      comments: '$comments',
       userDetails: {
         userImage: '$createdBy.profilePhoto',
         userEmail: '$createdBy.email',
+        occupation: '$createdBy.occupation',
+        workplace: '$createdBy.workplace',
         firstName: '$createdBy.firstName',
         lastName: '$createdBy.lastName',
         country: '$createdBy.address.country',
@@ -144,7 +148,6 @@ exports.getAnswers = (req, res) => {
   .catch(err => {
     console.log(err)
   })
-
 
 }
 

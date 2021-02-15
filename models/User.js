@@ -17,6 +17,8 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
+  occupation: String,
+  workplace: String,
   imageUrl: String,
   imageId: String,
   email: {

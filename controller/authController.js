@@ -77,7 +77,7 @@ exports.uploadUserImage = (req, res) => {
   })
 }
 
-exports.login = (req, res) => {
+exports.login = (req, res, next) => {
   const { email, password } = req.body;
   let dbUser;
   User.findOne({ email: email })
@@ -85,6 +85,7 @@ exports.login = (req, res) => {
         if (!user) {
             res.status(401).json({ message: "could not find user with this email" });
         }
+        console.log(user)
         dbUser = user
         return bcrypt.compare(password, user.password)
     })

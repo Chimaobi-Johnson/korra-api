@@ -54,6 +54,7 @@ exports.addUserDetails = (req, res) => {
 
 exports.uploadUserImage = (req, res) => {
   const { image, userId } = req.body;
+  console.log(req.body);
   User.findById(userId).then(user => {
     if(!user) {
       const error = new Error("User not found!");

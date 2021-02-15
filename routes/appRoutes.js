@@ -15,6 +15,9 @@ router.post('/answer/main', appController.getMainAnswer);
 
 router.post('/answer', appController.addAnswer);
 
+router.post('/upvote/question', appController.upvoteQuestion);
+
+
 router.get('/user', passport.authenticate('jwt', { session: false }), appController.getUser);
 
 // router.post('/api/question/new', appController.postQuestion);

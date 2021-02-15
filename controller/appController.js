@@ -151,5 +151,31 @@ exports.getAnswers = (req, res) => {
 
 }
 
-
+exports.upvoteQuestion = (req, res, next) => {
+  const { userId, questionId } = req.body;
+  Question.findById(questionId)
+  .then(question => {
+    if(!question) {
+      const error = new Error("Question not found. Might have been deleted");
+      throw error
+    }
+    // check is id exists, if it does remove it
+    const isInArray = question.upvotes.includes(userId);
+    if(isInArray) {
+      const idIndex = question.upvotes.indexOf(userId);
+      if (idIndex > -1) {
+        question.upvotes.splice(idIndex, 1);
+      }
+    } else {
+      question.upvotes.push(userId)
+    }
+    
+    return question.save();
+  })
+  .then(updatedQuestion => {
+    res.status(200).json({ question: updatedQuestion });
+  }).catch(err => {
+    console.log(err);
+  })
+}
 

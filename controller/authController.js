@@ -83,7 +83,9 @@ exports.login = (req, res, next) => {
   User.findOne({ email: email })
     .then((user) => {     
         if (!user) {
-            res.status(401).json({ message: "could not find user with this email" });
+            const error = new Error("A user with this email could not be found!");
+            error.httpStatusCode = 401;
+            return next(error);
         }
         console.log(user)
         dbUser = user

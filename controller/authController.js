@@ -5,7 +5,7 @@ const cloudinary = require('cloudinary').v2;
 
 require('../config/cloudinary');
 
-exports.signUp = (req, res) => {
+exports.signUp = (req, res, next) => {
   const { firstName, lastName, email, gender, password } = req.body;
   bcrypt
     .hash(password, 12)
@@ -53,10 +53,13 @@ exports.addUserDetails = (req, res) => {
   })
 };
 
-exports.uploadUserImage = (req, res) => {
+exports.uploadUserImage = (req, res, next) => {
   const { profilePic, userId } = req.body;
   console.log(req);
   console.log(req.body);
+  console.log(req.file);
+  console.log(req.profilePic);
+  console.log(req.files);
   // if(!req.files.profilePic) {
   //   const error = new Error('No image provided');
   //   error.httpStatusCode = 422;

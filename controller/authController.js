@@ -55,13 +55,13 @@ exports.addUserDetails = (req, res) => {
 
 exports.uploadUserImage = (req, res) => {
   const { file, userId } = req.body;
+  console.log(req.files);
+  console.log(req);
   if(!req.files.profilePic) {
     const error = new Error('No image provided');
     error.httpStatusCode = 422;
     throw error;
   }
-  console.log(req.files)
-  console.log(req.body);
   User.findById(userId).then(user => {
     if(!user) {
       const error = new Error("User not found!");

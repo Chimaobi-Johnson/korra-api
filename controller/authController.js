@@ -55,6 +55,7 @@ exports.addUserDetails = (req, res) => {
 
 exports.uploadUserImage = (req, res) => {
   const { profilePic, userId } = req.body;
+  console.log(req);
   console.log(req.body);
   // if(!req.files.profilePic) {
   //   const error = new Error('No image provided');

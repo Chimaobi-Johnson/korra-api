@@ -64,13 +64,14 @@ exports.uploadUserImage = (req, res, next) => {
   //   error.httpStatusCode = 422;
   //   throw error;
   // }
+  console.log(req);
   User.findById(userId).then(user => {
     if(!user) {
       const error = new Error("User not found!");
       error.httpStatusCode = 404;
       return next(error);
     }
-    const savedUser = cloudinary.uploader.upload(profilePic, { folder: "korra" }, (err, result) => {
+    const savedUser = cloudinary.uploader.upload(profilePic.uri, { folder: "korra" }, (err, result) => {
       if(result) {
         user.profilePhoto = result.url;
         user.profilePhotoId = result.public_id;

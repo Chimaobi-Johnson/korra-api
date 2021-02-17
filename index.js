@@ -50,9 +50,9 @@ const Storage = multer.diskStorage({
   },
 })
 
-const upload = multer({ storage: Storage })
+// const upload = multer({ storage: Storage })
 
-app.use(multer({ storage: storage }).fields([
+app.use(multer({ storage: Storage }).fields([
   { name: 'profilePic', maxCount: 1 },
   { name: 'answerImage', maxCount: 8 },
   { name: 'coverImage', maxCount: 1 },

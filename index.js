@@ -40,6 +40,8 @@ require('./services/passport');
 app.use(bodyParser.json()); // to parse incoming json data
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(appRoutes);
+app.use(authRoutes);
 
 const Storage = multer.diskStorage({
   destination(req, file, callback) {
@@ -66,8 +68,6 @@ app.use(multer({ storage: Storage }).fields([
 //   })
 // })
 
-app.use(appRoutes);
-app.use(authRoutes);
 
 app.get('/', (req, res) => {
     res.send("Welcome to Korra api")

@@ -38,7 +38,7 @@ require('./services/passport');
 // app.use(passport.session());
 
 app.use(bodyParser.json()); // to parse incoming json data
-// app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 
 const Storage = multer.diskStorage({

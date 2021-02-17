@@ -55,39 +55,39 @@ exports.addUserDetails = (req, res) => {
 
 exports.uploadUserImage = (req, res, next) => {
   const { profilePic, userId } = req.body;
-  console.log('file', req.files)
-  console.log('body', req.body)
-  console.log(req);
-  console.log(req.profilePic);
+  // console.log('file', req.files)
+  // console.log('body', req.body)
+  // console.log(req);
+  // console.log(req.profilePic);
   // if(!req.files.profilePic) {
   //   const error = new Error('No image provided');
   //   error.httpStatusCode = 422;
   //   throw error;
   // }
-  // User.findById(userId).then(user => {
-  //   if(!user) {
-  //     const error = new Error("User not found!");
-  //     error.httpStatusCode = 404;
-  //     return next(error);
-  //   }
-  //   const savedUser = cloudinary.uploader.upload(req.files.profilePic, { folder: "korra" }, (err, result) => {
-  //     if(result) {
-  //       user.profilePhoto = result.url;
-  //       user.profilePhotoId = result.public_id;
-  //     }
-  //     return user.save();
-  //   })
-  //   return savedUser;
-  // })
-  // .then(savedUser => {
-  //   res.status(200).json({ user: savedUser, message: "Image uploaded successfully" });
-  // })
-  // .catch(err => {
-  //   console.log(err);
-  //   const error = new Error(err);
-  //   error.httpStatusCode = 500;
-  //   return next(error);
-  // })
+  User.findById(userId).then(user => {
+    if(!user) {
+      const error = new Error("User not found!");
+      error.httpStatusCode = 404;
+      return next(error);
+    }
+    const savedUser = cloudinary.uploader.upload(profilePic, { folder: "korra" }, (err, result) => {
+      if(result) {
+        user.profilePhoto = result.url;
+        user.profilePhotoId = result.public_id;
+      }
+      return user.save();
+    })
+    return savedUser;
+  })
+  .then(savedUser => {
+    res.status(200).json({ user: savedUser, message: "Image uploaded successfully" });
+  })
+  .catch(err => {
+    console.log(err);
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  })
 }
 
 exports.login = (req, res, next) => {

@@ -11,32 +11,12 @@ const keys = require('./config/keys');
 
 const app = express();
 
-const storage = multer.diskStorage({
-  destination: null,
-  filename: function (req, file, cb) {
-    cb(null, uuidv4() + file.originalname)
-  }
-});
 
-
-const fileFilter = (req, file, cb) => {
-  if (file.mimetype === 'image/png' ||
-    file.mimetype === 'image/jpg' ||
-    file.mimetype === 'image/jpeg' ||
-    req.body.profilePic === 'image/jpeg' ||
-    req.body.profilePic === 'image/jpg'
-  ) {
-    cb(null, true);
-  } else {
-    cb(null, false);
-  }
-};
-
-app.use(multer({ storage: storage, fileFilter: fileFilter }).fields([
-  { name: 'profilePic', maxCount: 1 },
-  { name: 'answerImage', maxCount: 8 },
-  { name: 'coverImage', maxCount: 1 },
-]));
+// app.use(multer({ storage: storage }).fields([
+//   { name: 'profilePic', maxCount: 1 },
+//   { name: 'answerImage', maxCount: 8 },
+//   { name: 'coverImage', maxCount: 1 },
+// ]));
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -60,6 +40,31 @@ require('./services/passport');
 app.use(bodyParser.json()); // to parse incoming json data
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
+const Storage = multer.diskStorage({
+  destination(req, file, callback) {
+    callback(null, './images')
+  },
+  filename(req, file, callback) {
+    callback(null, `${file.fieldname}_${Date.now()}_${file.originalname}`)
+  },
+})
+
+const upload = multer({ storage: Storage })
+
+app.use(multer({ storage: storage }).fields([
+  { name: 'profilePic', maxCount: 1 },
+  { name: 'answerImage', maxCount: 8 },
+  { name: 'coverImage', maxCount: 1 },
+]));
+
+// app.post('/api/upload', upload.array('profilePic', 3), (req, res) => {
+//   console.log('file', req.files)
+//   console.log('body', req.body)
+//   res.status(200).json({
+//     message: 'success!',
+//   })
+// })
 
 app.use(appRoutes);
 app.use(authRoutes);

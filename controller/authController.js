@@ -55,11 +55,8 @@ exports.addUserDetails = (req, res) => {
 
 exports.uploadUserImage = (req, res, next) => {
   const { profilePic, userId } = req.body;
-  console.log(req);
-  console.log(req.body);
-  console.log(req.file);
-  console.log(req.profilePic);
-  console.log(req.files);
+  console.log('file', req.files)
+  console.log('body', req.body)
   // if(!req.files.profilePic) {
   //   const error = new Error('No image provided');
   //   error.httpStatusCode = 422;
@@ -71,7 +68,7 @@ exports.uploadUserImage = (req, res, next) => {
       error.httpStatusCode = 404;
       return next(error);
     }
-    const savedUser = cloudinary.uploader.upload(profilePic, { folder: "korra" }, (err, result) => {
+    const savedUser = cloudinary.uploader.upload(req.files.profilePic, { folder: "korra" }, (err, result) => {
       if(result) {
         user.profilePhoto = result.url;
         user.profilePhotoId = result.public_id;

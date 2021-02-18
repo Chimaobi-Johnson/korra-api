@@ -11,13 +11,6 @@ const keys = require('./config/keys');
 
 const app = express();
 
-
-// app.use(multer({ storage: storage }).fields([
-//   { name: 'profilePic', maxCount: 1 },
-//   { name: 'answerImage', maxCount: 8 },
-//   { name: 'coverImage', maxCount: 1 },
-// ]));
-
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -50,24 +43,12 @@ const Storage = multer.diskStorage({
     callback(null, `${file.fieldname}_${Date.now()}_${file.originalname}`)
   },
 })
-{
-  limits: { fieldSize: 2 * 1024 * 1024 }
-}
-// const upload = multer({ storage: Storage })
 
 app.use(multer({ storage: Storage, limits: { fieldSize: 2 * 1024 * 1024 } }).fields([
   { name: 'profilePic', maxCount: 1 },
   { name: 'answerImage', maxCount: 8 },
   { name: 'coverImage', maxCount: 1 },
 ]));
-
-// app.post('/api/upload', upload.array('profilePic', 3), (req, res) => {
-//   console.log('file', req.files)
-//   console.log('body', req.body)
-//   res.status(200).json({
-//     message: 'success!',
-//   })
-// })
 
 app.use(appRoutes);
 app.use(authRoutes);

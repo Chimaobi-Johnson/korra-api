@@ -71,7 +71,7 @@ exports.uploadUserImage = (req, res, next) => {
       error.httpStatusCode = 404;
       return next(error);
     }
-    const savedUser = cloudinary.uploader.upload(req.files.profilePic, { folder: "korra" }, (err, result) => {
+    const savedUser = cloudinary.uploader.upload(profilePic, { folder: "korra" }, (err, result) => {
       if(result) {
         user.profilePhoto = result.url;
         user.profilePhotoId = result.public_id;

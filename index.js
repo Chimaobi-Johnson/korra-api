@@ -50,10 +50,12 @@ const Storage = multer.diskStorage({
     callback(null, `${file.fieldname}_${Date.now()}_${file.originalname}`)
   },
 })
-
+{
+  limits: { fieldSize: 2 * 1024 * 1024 }
+}
 // const upload = multer({ storage: Storage })
 
-app.use(multer({ storage: Storage }).fields([
+app.use(multer({ storage: Storage, limits: { fieldSize: 2 * 1024 * 1024 } }).fields([
   { name: 'profilePic', maxCount: 1 },
   { name: 'answerImage', maxCount: 8 },
   { name: 'coverImage', maxCount: 1 },
